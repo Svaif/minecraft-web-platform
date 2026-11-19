@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if (isset($_POST['logOut'])) {
+        unset($_SESSION['user']);
+        session_destroy();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,9 +28,17 @@
     <nav id="navigation" style='visibility: hidden; opacity: 0;'>
         <a href="">home</a>
         <a href="">rules</a>
-        <a href="">new</a>
-        <a href="./login/">login</a>
-        <a href="">log out</a>
+        <a href="">news</a>
+        <?php
+            if (!isset($_SESSION['user'])) {
+                echo '<a href="./login/">login</a>';
+            }else{
+                echo '<form method="post">';
+                echo '    <button name="logOut">log out</button>';
+                echo '</form>';
+            }
+        ?>
+        
     </nav>
     <main>
         
