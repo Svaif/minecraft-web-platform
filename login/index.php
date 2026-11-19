@@ -1,20 +1,22 @@
 <?php
     session_start();
     if(isset($_SESSION['user'])) {
-        header('Location: ../');
+        header('Location: /');
     }
     if (isset($_POST['login']) && isset($_POST['password'])) {
-
-        if ($_POST['login'] == 'admin' && $_POST['password'] == '123123') {
-            $_SESSION['user'] = 'admin';
-            header('Location: ../');
-        }else{
-            echo 'Wrong password or login';
+        $password = $_POST['password'];
+        $login = $_POST['login'];
+        $connect = mysqli_connect('localhost', 'root', '', 'minecraft-web-platform');
+        $zapytanie = "SELECT * FROM users WHERE login='$login' && password = '$password'";
+        $wynik = mysqli_fetch_array(mysqli_query($connect, $zapytanie));
+        if ($wynik == NULL) {
+            echo "niepoprawne dane logowania";
+        }else if ($wynik['login'] == $login) {
+            $_SESSION['user'] = $wynik;
+            header('Location: /');
         }
-
-
+        mysqli_close($connect);
     }
-    
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +24,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Account</title>
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+
 </head>
 <body>
+    <?php
+        include("../elements/header/header.php");
+    ?>
     <form method="post">
         <label>
             <input type="text" name="login"> login
@@ -36,5 +44,6 @@
         <br>
         <button type="submit">submit</button>
     </form>
+    <script src='/assets/js/burgerOpenClose.js'></script>
 </body>
 </html>
