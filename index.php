@@ -1,9 +1,5 @@
 <?php
     session_start();
-    if (isset($_POST['logOut'])) {
-        unset($_SESSION['user']);
-        session_destroy();
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +14,7 @@
 </head>
 <body>
     <header>
-        <a href="/index.php">Logo</a>
+        <a href="./index.php">Logo</a>
         <button class="burger" onclick="burgerOpenClose()">
             <span></span>
             <span></span>
@@ -28,8 +24,12 @@
     <nav id="navigation" style='visibility: hidden; opacity: 0;'>
         <a href="">home</a>
         <a href="">rules</a>
-        <a href="">news</a>
+        <a href="./news/">news</a>
         <?php
+            if (isset($_POST['logOut'])) {
+                unset($_SESSION['user']);
+                session_destroy();
+            }
             if (!isset($_SESSION['user'])) {
                 echo '<a href="./login/">login</a>';
             }else{
